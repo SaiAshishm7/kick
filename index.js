@@ -3,23 +3,26 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const authRoutes = require('./routes/authRoutes');
-const turfRoutes = require('./routes/turfRoutes'); 
+const turfRoutes = require('./routes/turfRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
+const reviewRoutes = require('./routes/reviewRoutes');
 const userRoutes = require('./routes/userRoutes');
-const adminRoutes = require('./routes/adminRoutes');
+const notificationRoutes = require('./routes/notificationRoutes');
+const adminRoutes = require('./routes/adminRoutes');  // <-- Added this
+
 const app = express();
 
-// Middleware
 app.use(express.json());
 
 // Routes
-app.use('/api/auth', authRoutes); 
-app.use('/api/booking', bookingRoutes);  // Booking routes
-app.use('/api/user', userRoutes);  // User-related routes
-app.use('/api/admin', adminRoutes);  // Admin-related routes
-app.use('/api/turf', turfRoutes);// Turf management routes
+app.use('/api/auth', authRoutes);
+app.use('/api/turfs', turfRoutes);
+app.use('/api/bookings', bookingRoutes);
+app.use('/api/reviews', reviewRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/notifications', notificationRoutes);
+app.use('/api/admin', adminRoutes);  // <-- Added this
 
-// MongoDB Connection
 mongoose.connect('mongodb://localhost:27017/kickNclick', { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
         console.log('MongoDB connected successfully');

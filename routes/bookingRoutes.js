@@ -73,4 +73,31 @@ router.get('/', async (req, res) => {
         res.status(500).json({ message: 'Error fetching bookings', error: err });
     }
 });
+
+
+// Modify Booking
+router.put('/modify/:id', async (req, res) => {
+    try {
+        const booking = await Booking.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (!booking) {
+            return res.status(404).json({ message: 'Booking not found' });
+        }
+        res.status(200).json({ message: 'Booking modified successfully', booking });
+    } catch (err) {
+        res.status(400).json({ message: 'Error modifying booking', error: err });
+    }
+});
+
+// Check Turf Availability for a Specific Date
+router.get('/availability/:turfId/:date', async (req, res) => {
+    try {
+        const { turfId, date } = req.params;
+        const bookings = await Booking.find({ turfId, date });
+
+        res.status(200).json({ message: 'Availability fetched', bookings });
+    } catch (err) {
+        res.status(400).json({ message: 'Error fetching availability', error: err });
+    }
+});
+
 module.exports = router;
