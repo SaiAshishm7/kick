@@ -1,0 +1,111 @@
+.turf-details-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
+}
+
+.turf-info {
+    grid-column: 1 / -1;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.turf-info h2 {
+    margin: 0 0 20px 0;
+    color: #333;
+    font-size: 2em;
+}
+
+.turf-meta {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.turf-meta p {
+    margin: 0;
+    color: #666;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.turf-meta i {
+    color: #28a745;
+}
+
+.turf-description {
+    margin: 20px 0;
+}
+
+.turf-description h3 {
+    color: #444;
+    margin-bottom: 10px;
+}
+
+.turf-amenities {
+    margin: 20px 0;
+}
+
+.turf-amenities h3 {
+    color: #444;
+    margin-bottom: 10px;
+}
+
+.turf-amenities ul {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+}
+
+.turf-amenities li {
+    padding: 8px 12px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.turf-amenities li::before {
+    content: '✓';
+    color: #28a745;
+}
+
+.booking-section {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.reviews-section {
+    grid-column: 1 / -1;
+}
+
+.reviews-section h3 {
+    margin-bottom: 20px;
+    color: #444;
+}
+
+@media (max-width: 768px) {
+    .turf-details-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .turf-meta {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .turf-amenities ul {
+        grid-template-columns: 1fr;
+    }
+}

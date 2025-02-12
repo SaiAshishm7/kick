@@ -1,15 +1,35 @@
-// src/components/Navbar.js
-
 import React from 'react';
 import { Link } from 'react-router-dom';
+import './Navbar.css';
 
 const Navbar = () => {
+    const user = JSON.parse(localStorage.getItem('user'));
+
+    const handleLogout = () => {
+        localStorage.removeItem('user');
+        window.location.href = '/';
+    };
+
     return (
-        <nav style={{ padding: '10px', backgroundColor: '#333', color: '#fff' }}>
-            <Link to="/" style={{ margin: '0 10px', color: '#fff' }}>Home</Link>
-            <Link to="/profile" style={{ margin: '0 10px', color: '#fff' }}>Profile</Link>
-            <Link to="/admin" style={{ margin: '0 10px', color: '#fff' }}>Admin</Link>
-            <Link to="/login" style={{ margin: '0 10px', color: '#fff' }}>Login</Link>
+        <nav className="navbar">
+            <div className="nav-left">
+                <Link to="/" className="nav-link">Home</Link>
+                <Link to="/dashboard" className="nav-link">Browse Turfs</Link>
+            </div>
+            <div className="nav-right">
+                {user ? (
+                    <>
+                        <Link to="/my-bookings" className="nav-link">My Bookings</Link>
+                        <Link to="/profile" className="nav-link">Profile</Link>
+                        <button onClick={handleLogout} className="logout-btn">Logout</button>
+                    </>
+                ) : (
+                    <>
+                        <Link to="/login" className="nav-link">Login</Link>
+                        <Link to="/signup" className="nav-link">Sign Up</Link>
+                    </>
+                )}
+            </div>
         </nav>
     );
 };
