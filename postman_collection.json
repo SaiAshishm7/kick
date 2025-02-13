@@ -1,0 +1,86 @@
+{
+    "info": {
+        "_postman_id": "turf-booking-advanced-features",
+        "name": "Turf Booking Advanced Features",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Recurring Booking",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"user\": \"{{user_id}}\",\n    \"turf\": \"{{turf_id}}\",\n    \"sport\": \"football\",\n    \"startDate\": \"2024-03-01\",\n    \"endDate\": \"2024-04-30\",\n    \"recurringPattern\": \"weekly\",\n    \"daysOfWeek\": [\"Monday\", \"Wednesday\"],\n    \"startTime\": \"18:00\",\n    \"endTime\": \"20:00\",\n    \"groupDiscount\": 10\n}"
+                },
+                "url": {
+                    "raw": "{{base_url}}/bookings/recurring",
+                    "host": ["{{base_url}}"],
+                    "path": ["bookings", "recurring"]
+                }
+            }
+        },
+        {
+            "name": "Waitlist Booking",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"user\": \"{{user_id}}\",\n    \"turf\": \"{{turf_id}}\",\n    \"sport\": \"football\",\n    \"date\": \"2024-03-15\",\n    \"startTime\": \"18:00\",\n    \"endTime\": \"20:00\"\n}"
+                },
+                "url": {
+                    "raw": "{{base_url}}/bookings/waitlist",
+                    "host": ["{{base_url}}"],
+                    "path": ["bookings", "waitlist"]
+                }
+            }
+        },
+        {
+            "name": "Redeem Loyalty Points",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"user\": \"{{user_id}}\",\n    \"pointsToRedeem\": 500\n}"
+                },
+                "url": {
+                    "raw": "{{base_url}}/bookings/redeem-points",
+                    "host": ["{{base_url}}"],
+                    "path": ["bookings", "redeem-points"]
+                }
+            }
+        }
+    ],
+    "variable": [
+        {
+            "key": "base_url",
+            "value": "http://localhost:3000"
+        },
+        {
+            "key": "user_id",
+            "value": "replace_with_actual_user_id"
+        },
+        {
+            "key": "turf_id",
+            "value": "replace_with_actual_turf_id"
+        }
+    ]
+}

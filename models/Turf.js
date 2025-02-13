@@ -14,7 +14,21 @@ const turfSchema = new mongoose.Schema({
     name: { type: String, required: true },
     location: { type: String, required: true },
     hourlyPrice: { type: Number, required: true },
-    availableSports: [{ type: String }],
+    sports: {
+        type: [String],
+        enum: ['football', 'cricket', 'basketball', 'tennis', 'volleyball', 'badminton'],
+        required: true,
+        set: v => v.map(sport => sport.toLowerCase()),
+        validate: {
+            validator: function(v) {
+                return v.every(sport => 
+                    ['football', 'cricket', 'basketball', 'tennis', 'volleyball', 'badminton']
+                        .includes(sport.toLowerCase())
+                );
+            },
+            message: props => `Some sports are not supported: ${props.value}`
+        }
+    },
     images: [{ type: String }], // URLs to turf images
     amenities: [{ type: String }], // e.g., ['Parking', 'Changing Rooms', 'Water']
     description: { type: String },
@@ -33,6 +47,19 @@ turfSchema.pre('save', function(next) {
     next();
 });
 
-const Turf = mongoose.model('Turf', turfSchema);
+// Log model creation details
+console.log('Turf Model Creation:', {
+    schemaName: 'turfSchema',
+    modelName: 'Turf',
+    collectionName: 'turfs'
+});
+
+const Turf = mongoose.model('Turf', turfSchema, 'turfs');
+
+// Verify model creation
+console.log('Turf Model Created:', {
+    modelName: Turf.modelName,
+    collectionName: Turf.collection.name
+});
 
 module.exports = Turf;

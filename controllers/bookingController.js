@@ -1,46 +1,85 @@
 const Booking = require('../models/Booking');
 const Turf = require('../models/Turf');
+const User = require('../models/User');
+
+// Helper function to parse time string to minutes since midnight
+const parseTimeToMinutes = (timeStr) => {
+    const [hours, minutes] = timeStr.split(':').map(Number);
+    return hours * 60 + minutes;
+};
+
+// Helper function to calculate duration in hours
+const calculateDuration = (startTime, endTime) => {
+    const startMinutes = parseTimeToMinutes(startTime);
+    const endMinutes = parseTimeToMinutes(endTime);
+    return (endMinutes - startMinutes) / 60;
+};
 
 // Create a booking
 exports.createBooking = async (req, res) => {
-    const { userId, turfId, sport, date, startTime, endTime } = req.body;
+    console.log('=== New Booking Request ===');
+    console.log('Raw request body:', req.body);
 
     try {
-        const turf = await Turf.findById(turfId);
-        if (!turf) {
-            return res.status(404).json({ message: 'Turf not found!' });
+        // Validate required fields
+        if (!req.body.user || !req.body.turf) {
+            return res.status(400).json({
+                message: 'Missing required fields',
+                details: {
+                    user: !req.body.user ? 'User ID is required' : undefined,
+                    turf: !req.body.turf ? 'Turf ID is required' : undefined
+                }
+            });
         }
 
-        // Check if time slot is available
-        const existingBooking = await Booking.findOne({
-            turf: turfId,
-            date,
-            $or: [
-                { startTime: { $lt: endTime }, endTime: { $gt: startTime } },
-                { startTime: { $gte: startTime, $lt: endTime } }
-            ]
-        });
-
-        if (existingBooking) {
-            return res.status(400).json({ message: 'Time slot is already booked!' });
-        }
-
-        const totalPrice = turf.pricePerHour * (parseInt(endTime) - parseInt(startTime));
-
+        // Create new booking with fields matching the Booking model
         const newBooking = new Booking({
-            user: userId,
-            turf: turfId,
-            sport,
-            date,
-            startTime,
-            endTime,
-            totalPrice
+            user: req.body.user,     // Matches 'user' field in model
+            turf: req.body.turf,     // Matches 'turf' field in model
+            sport: req.body.sport || 'football',
+            date: req.body.date,
+            startTime: req.body.startTime,
+            endTime: req.body.endTime,
+            status: 'pending',
+            paymentStatus: 'pending'
         });
 
+        // Log the booking object before saving
+        console.log('Booking object before save:', {
+            user: newBooking.user,
+            turf: newBooking.turf,
+            sport: newBooking.sport,
+            date: newBooking.date,
+            startTime: newBooking.startTime,
+            endTime: newBooking.endTime
+        });
+
+        // Save the booking
         await newBooking.save();
-        res.status(201).json({ message: 'Booking created successfully!', booking: newBooking });
+        console.log('Booking saved successfully');
+
+        // Populate turf details for response
+        await newBooking.populate('turf', 'name location hourlyPrice');
+
+        res.status(201).json({
+            message: 'Booking created successfully!',
+            booking: {
+                id: newBooking._id,
+                turf: newBooking.turf,
+                date: newBooking.date,
+                startTime: newBooking.startTime,
+                endTime: newBooking.endTime,
+                sport: newBooking.sport,
+                totalPrice: newBooking.totalPrice,
+                status: newBooking.status
+            }
+        });
     } catch (err) {
-        res.status(500).json({ message: 'Server error!' });
+        console.error('Error creating booking:', err);
+        res.status(500).json({
+            message: 'Server error during booking creation',
+            error: process.env.NODE_ENV === 'development' ? err.message : undefined
+        });
     }
 };
 
@@ -103,10 +142,6 @@ exports.getBookingsForUser = async (req, res) => {
 };
 const sendEmail = require('../utils/nodemailer');
 
-// Create a booking
-exports.createBooking = async (req, res) => {
-    const { userId, turfId, sport, date, startTime, endTime } = req.body;
-
     try {
         const turf = await Turf.findById(turfId);
         if (!turf) {
@@ -161,4 +196,4 @@ exports.createBooking = async (req, res) => {
     } catch (err) {
         res.status(500).json({ message: 'Server error!' });
     }
-};
+;

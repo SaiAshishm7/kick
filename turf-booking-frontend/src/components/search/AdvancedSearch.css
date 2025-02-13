@@ -1,0 +1,259 @@
+.advanced-search {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.search-filters {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.search-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.search-input,
+.location-input,
+.date-input,
+.time-select,
+.price-input,
+.rating-select,
+.sort-select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1em;
+}
+
+.amenities-section {
+    margin-top: 20px;
+}
+
+.amenities-section h4 {
+    margin: 0 0 10px 0;
+    color: #333;
+}
+
+.amenities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+}
+
+.amenity-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.amenity-checkbox:hover {
+    background-color: #f8f9fa;
+}
+
+.amenity-checkbox input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.search-button {
+    width: 100%;
+    padding: 12px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1em;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+}
+
+.search-button:hover {
+    background: #0056b3;
+}
+
+.search-results {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+@media (min-width: 992px) {
+    .search-results {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.map-view {
+    position: sticky;
+    top: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.info-window {
+    padding: 5px;
+}
+
+.info-window h3 {
+    margin: 0 0 5px 0;
+    font-size: 1em;
+}
+
+.info-window p {
+    margin: 2px 0;
+    font-size: 0.9em;
+    color: #666;
+}
+
+.results-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.turf-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    transition: transform 0.2s;
+}
+
+.turf-card:hover {
+    transform: translateY(-2px);
+}
+
+.turf-image {
+    width: 200px;
+    height: 150px;
+    object-fit: cover;
+}
+
+.turf-info {
+    padding: 15px;
+    flex: 1;
+}
+
+.turf-info h3 {
+    margin: 0 0 5px 0;
+    color: #2c3e50;
+}
+
+.location {
+    color: #666;
+    font-size: 0.9em;
+    margin: 0 0 10px 0;
+}
+
+.turf-details {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.price {
+    font-weight: bold;
+    color: #28a745;
+}
+
+.rating {
+    color: #ffc107;
+}
+
+.distance {
+    font-size: 0.9em;
+    color: #666;
+    margin: 5px 0;
+}
+
+.turf-amenities {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin: 10px 0;
+}
+
+.amenity-tag {
+    background: #e9ecef;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    color: #495057;
+}
+
+.amenity-tag.more {
+    background: #6c757d;
+    color: white;
+}
+
+.view-details-btn {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.view-details-btn:hover {
+    background: #0056b3;
+}
+
+.loading {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+}
+
+.error {
+    text-align: center;
+    padding: 20px;
+    color: #dc3545;
+    background: #f8d7da;
+    border-radius: 4px;
+}
+
+.no-results {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+    background: #f8f9fa;
+    border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+    .turf-card {
+        flex-direction: column;
+    }
+
+    .turf-image {
+        width: 100%;
+        height: 200px;
+    }
+
+    .search-row {
+        grid-template-columns: 1fr;
+    }
+
+    .amenities-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    }
+}

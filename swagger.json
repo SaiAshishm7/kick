@@ -1,0 +1,221 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Turf Booking API",
+        "version": "1.1.0",
+        "description": "Advanced booking features for turf management"
+    },
+    "paths": {
+        "/bookings/recurring": {
+            "post": {
+                "summary": "Create a Recurring Booking",
+                "description": "Set up a booking that repeats on specified days with group discounts",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "user": {
+                                        "type": "string",
+                                        "description": "User ID"
+                                    },
+                                    "turf": {
+                                        "type": "string", 
+                                        "description": "Turf ID"
+                                    },
+                                    "sport": {
+                                        "type": "string",
+                                        "enum": ["football", "cricket", "basketball"]
+                                    },
+                                    "startDate": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "endDate": {
+                                        "type": "string", 
+                                        "format": "date"
+                                    },
+                                    "recurringPattern": {
+                                        "type": "string",
+                                        "enum": ["daily", "weekly", "monthly", "custom"]
+                                    },
+                                    "daysOfWeek": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "enum": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+                                        }
+                                    },
+                                    "startTime": {
+                                        "type": "string",
+                                        "pattern": "^([01]?[0-9]|2[0-3]):[0-5][0-9]$"
+                                    },
+                                    "endTime": {
+                                        "type": "string",
+                                        "pattern": "^([01]?[0-9]|2[0-3]):[0-5][0-9]$"
+                                    },
+                                    "groupDiscount": {
+                                        "type": "number",
+                                        "minimum": 0,
+                                        "maximum": 100
+                                    }
+                                },
+                                "required": ["user", "turf", "sport", "startDate", "endDate", "startTime", "endTime"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Recurring booking created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {"type": "string"},
+                                        "recurringBooking": {"type": "object"},
+                                        "bookingsGenerated": {"type": "number"}
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/bookings/waitlist": {
+            "post": {
+                "summary": "Join Waitlist for a Booking",
+                "description": "Add yourself to a waitlist for a potentially booked slot",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "user": {
+                                        "type": "string",
+                                        "description": "User ID"
+                                    },
+                                    "turf": {
+                                        "type": "string", 
+                                        "description": "Turf ID"
+                                    },
+                                    "sport": {
+                                        "type": "string",
+                                        "enum": ["football", "cricket", "basketball"]
+                                    },
+                                    "date": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "startTime": {
+                                        "type": "string",
+                                        "pattern": "^([01]?[0-9]|2[0-3]):[0-5][0-9]$"
+                                    },
+                                    "endTime": {
+                                        "type": "string",
+                                        "pattern": "^([01]?[0-9]|2[0-3]):[0-5][0-9]$"
+                                    }
+                                },
+                                "required": ["user", "turf", "sport", "date", "startTime", "endTime"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Slot immediately allocated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {"type": "string"},
+                                        "booking": {"type": "object"}
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "Added to waitlist",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {"type": "string"},
+                                        "waitlistEntry": {"type": "object"}
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/bookings/redeem-points": {
+            "post": {
+                "summary": "Redeem Loyalty Points",
+                "description": "Redeem accumulated loyalty points for a discount",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "user": {
+                                        "type": "string",
+                                        "description": "User ID"
+                                    },
+                                    "pointsToRedeem": {
+                                        "type": "number",
+                                        "minimum": 100
+                                    }
+                                },
+                                "required": ["user", "pointsToRedeem"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Points redeemed successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {"type": "string"},
+                                        "discountAmount": {"type": "number"},
+                                        "remainingPoints": {"type": "number"}
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Insufficient points",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {"type": "string"},
+                                        "currentPoints": {"type": "number"}
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
